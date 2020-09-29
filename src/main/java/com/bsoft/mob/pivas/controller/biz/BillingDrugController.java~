@@ -1,0 +1,244 @@
+package com.bsoft.mob.pivas.controller.biz;
+
+import com.bsoft.mob.cache.LoginUser;
+import com.bsoft.mob.cache.UserStorage;
+import com.bsoft.mob.datasource.DataSource;
+import com.bsoft.mob.pivas.pojo.Response;
+import com.bsoft.mob.pivas.pojo.SimpleRequest;
+import com.bsoft.mob.pivas.service.biz.SFMTService;
+import com.bsoft.mob.pivas.service.commons.DateTimeService;
+import com.bsoft.mob.pivas.service.security.SecurityMTService;
+import com.bsoft.mob.pivas.service.socket.SocketClient;
+import com.bsoft.mob.pivas.service.system.SystemMTService;
+import com.bsoft.mob.service.mob.dic.ConfigMaintainService;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.validation.Valid;
+import java.io.IOException;
+
+/**
+ * 发药计费Controller
+ * Created by admin on 2015-03-27.
+ */
+@Controller
+@RequestMapping("/auth")
+public class BillingDrugController {
+
+    @Value("${socket.ip}")
+    private String socketIp;
+
+    @Value("${socket.port}")
+    private int socketPort;
+
+
+    @Autowired
+    SFMTService sfmtService;
+
+    @Autowired
+    UserStorage userStorage;
+
+    @Autowired
+    SecurityMTService securityMTService;
+
+    @Autowired
+    SystemMTService systemMTService;
+
+
+    @Autowired
+    ConfigMaintainService configMaintainService;
+
+
+    @Autowired
+    DateTimeService dateTimeService;
+
+    private static final Log logger = LogFactory.getLog(BillingDrugController.class);
+
+
+    /**
+     * 执行发药计费
+     *
+     * @param request {@link SimpleRequest#data} 值为条码字符串
+     * @param result
+     * @return 成功{@link Response#data} 值为1
+     */
+    @RequestMapping(value = "bill/check", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Response<Integer> check(@Valid @RequestBody SimpleRequest request,
+                            BindingResult result) {
+
+        Response<Integer> response = new Response<>();
+
+        if (result.hasErrors()) {
+            response.isSuccess = false;
+            response.errorMessage = result.getFieldError().toString();
+            return response;
+        }
+
+        LoginUser user = userStorage.findUser(request.getToken());
+
+        //获取当前的摆药时间
+        String time = dateTimeService.now(DataSource.MOB);
+        if (StringUtils.isEmpty(time)) {
+            LocalDateTime localDate = LocalDateTime.now();
+            time = localDate.toString("yyyy-MM-dd HH:mm:ss");
+        }
+
+        //获取员工代码
+        String ygdm = user.getYgdm();
+
+        StringBuilder sb = new StringBuilder("BQ|");
+        sb.append(request.getData()).append("|").append(ygdm).append("|").append(time);
+
+        //4.计费操作
+        SocketClient socketClient = new SocketClient(socketPort, sb.toString(), socketIp);
+        String billStr = null;
+        try {
+            billStr = socketClient.writeToServer();
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
+        //TODO 解析响应
+        if (StringUtils.isEmpty(billStr)) {
+            response.isSuccess = false;
+            response.errorMessage = "计费失败:后台无法连接计费服务";
+            return response;
+        }
+        billStr = billStr.trim();
+        String[] resStr = billStr.split("\\|");
+        if (ArrayUtils.isEmpty(resStr) || resStr.length < 2) {
+            response.isSuccess = false;
+            response.errorMessage = "计费失败:后台无法正确解析数据";
+            return response;
+        }
+
+        if ("1".equals(resStr[1])) {
+            response.isSuccess = true;
+            response.data = 1;
+            return response;
+        } else {
+            response.isSuccess = false;
+            response.errorMessage = resStr[2];
+            response.errorflag = 4;
+            return response;
+        }
+
+    }
+
+
+    //TODO 演示
+
+//    /**
+//     * 执行发药计费
+//     *
+//     * @param request {@link SimpleRequest#data} 值为条码字符串
+//     * @param result
+//     * @return 成功{@link Response#data} 值为1
+//     */
+//    @RequestMapping(value = "bill/check", method = RequestMethod.POST)
+//    public
+//    @ResponseBody
+//    Response<Integer> check(@Valid @RequestBody SimpleRequest request,
+//                            BindingResult result) {
+//
+//        Response<Integer> response = new Response<>();
+//
+//        if (result.hasErrors()) {
+//            response.isSuccess = false;
+//            response.errorMessage = result.getFieldError().toString();
+//            return response;
+//        }
+//
+//        LoginUser user = userStorage.findUser(request.getToken());
+//        String jgid = user.getJgid();
+//
+//        //1. check 医嘱是否停嘱
+//        Response<SF01> bizResponse = sfmtService.checkSFIfStopped(request.getData(), jgid);
+//
+//        if (!bizResponse.isSuccess) {
+//            response.isSuccess = false;
+//            response.errorMessage = bizResponse.errorMessage;
+//            response.errorflag = bizResponse.errorflag;
+//            return response;
+//        }
+//
+//        SF01 sf01 = bizResponse.data;
+//        //2. check发药状态
+//        if (sf01.FYZT == 1) {
+//
+//            response.isSuccess = false;
+//
+//            //查询员工信息
+//            BizResponse<XTYH> xtyhBizResponse = securityMTService.getXTYH(sf01.BYGH);
+//            if (!xtyhBizResponse.isSuccess) {
+//                response.errorMessage = xtyhBizResponse.errorMessage;
+//                return response;
+//            }
+//
+//            LocalDateTime llt = LocalDateTime.parse(sf01.BYSJ, DateTimeUtil.timeFormatter);
+//            XTYH xtyh = xtyhBizResponse.data;
+//            response.errorMessage = xtyh.YHXM + "于" + llt.toString("MM-dd HH:mm") + "已计费";
+//            response.errorflag = 4;
+//            return response;
+//        }
+//
+//
+//        //3. 检测流程有无启用
+//        BizResponse<JPLC> jplcBizResponse = systemMTService.getWorkFlow(sf01.JPBH, 5);
+//        if (!jplcBizResponse.isSuccess) {
+//            response.errorMessage = jplcBizResponse.errorMessage;
+//            return response;
+//        }
+//        JPLC jplc = jplcBizResponse.data;
+//
+//        //4. 检测前置模块有无执行
+//        if (jplc.QZMK == null || sf01.ZTBZ < jplc.QZMK) {
+//            response.isSuccess = false;
+//            BizResponse<SystemConfig> systemConfigBizResponse = configMaintainService.getConfig("606", String.valueOf(jplc.QZMK));
+//            if (!systemConfigBizResponse.isSuccess) {
+//                response.errorMessage = systemConfigBizResponse.errorMessage;
+//                return response;
+//            }
+//            SystemConfig systemConfig = systemConfigBizResponse.data;
+//            response.errorMessage = systemConfig.DMMC + "未执行";
+//            return response;
+//        }
+//
+//
+//        Long jlxh = sf01.JLXH;
+//
+//        //获取当前的时间
+//        String time = dateTimeService.now(DataSource.MOB);
+//        if (StringUtils.isEmpty(time)) {
+//            LocalDateTime localDate = LocalDateTime.now();
+//            time = localDate.toString("yyyy-MM-dd HH:mm:ss");
+//        }
+//
+//        //获取员工代码
+//        String ygdm = user.getYgdm();
+//
+//        //5. 执行发药操作
+//        BizResponse<Integer> bizResponse1 = sfmtService.action(jlxh, time, ygdm, ActionType.BILLING);
+//        if (!bizResponse1.isSuccess) {
+//            response.isSuccess = false;
+//            response.errorMessage = bizResponse1.errorMessage;
+//            return response;
+//        }
+//
+//        response.isSuccess = true;
+//        response.data = bizResponse1.data;
+//        return response;
+//    }
+}
