@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bsoft.mob.pivas.persistence.mob.QXKZMapper">
+
+
+    <select id="getAuthories" resultType="com.bsoft.mob.pivas.domain.mob.QXKZ">
+        SELECT QXKZ.*, JPZX.JPMC FROM JM_QXKZ QXKZ , JM_JPZX JPZX
+        WHERE JPZX.ZTBZ=1 AND QXKZ.JPBH=JPZX.JPBH AND QXKZ.YGDM=#{ygdm} AND QXKZ.JGID=#{jgid}
+    </select>
+
+</mapper>

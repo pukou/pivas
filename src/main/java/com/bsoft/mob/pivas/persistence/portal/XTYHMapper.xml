@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bsoft.mob.pivas.persistence.portal.XTYHMapper">
+
+    <select id="login" resultType="com.bsoft.mob.pivas.domain.portal.XTYH"
+            parameterType="com.bsoft.mob.cache.LoginUser">
+        SELECT  * FROM V_MOB_PORTAL_XTYH WHERE YHDM = #{username} AND YHMM=#{password} AND JGID=#{jgid}
+    </select>
+
+    <select id="getXTYH" resultType="com.bsoft.mob.pivas.domain.portal.XTYH">
+        SELECT  * FROM V_MOB_PORTAL_XTYH WHERE YHID = #{yhid}
+    </select>
+
+    <select id="getUser" resultType="com.bsoft.mob.pivas.domain.portal.XTYH">
+        SELECT  * FROM V_MOB_PORTAL_XTYH WHERE YHDM = #{username}  AND JGID=#{jgid}
+    </select>
+
+    <select id="getUserByYGDM" resultType="com.bsoft.mob.pivas.domain.portal.XTYH">
+        SELECT  * FROM V_MOB_PORTAL_XTYH WHERE YHID=#{ygdm}
+    </select>
+
+</mapper>

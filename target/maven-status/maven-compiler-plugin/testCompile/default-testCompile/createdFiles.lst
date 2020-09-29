@@ -1,0 +1,6 @@
+com\bsoft\mob\pivas\persistence\hrp\NormalTest.class
+com\bsoft\mob\pivas\persistence\mob\SF01MapperTest.class
+com\bsoft\mob\pivas\persistence\hrp\HSQLMapperTest.class
+com\bsoft\mob\pivas\persistence\mob\DateTimeMapperTest.class
+com\bsoft\mob\pivas\persistence\mob\YHTMMapperTest.class
+DateTest.class

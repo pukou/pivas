@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="PORTAL5X_MOB@10.10.2.74" uuid="c971ca20-5b35-4056-96de-be8864accaf4">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://10.10.2.74:1433;databaseName=PORTAL5X_MOB</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="PORTAL5X_HIS@10.10.2.74" uuid="369a7af1-8989-4d40-8065-146e2bfc9215">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://10.10.2.74;databaseName=PORTAL5X_HIS</jdbc-url>
+    </data-source>
+  </component>
+</project>

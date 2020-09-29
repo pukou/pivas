@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bsoft.mob.pivas.persistence.mob.SF01Mapper">
+
+
+    <select id="getSF01" resultType="com.bsoft.mob.pivas.domain.mob.SF01" >
+        SELECT JLXH,JGID,JPBH,ZYH,BRBQ, BRCH, BRXM, ZYHM, BRXB, BRNL, LSYZ, PCID,ZLSJ, TXM,
+            TXM_GZ,PZFS,ZTBZ,ZYLX,TZBZ,THBZ,SHHD, SHGH,SHSJ,SFWB,DYCS, DYGH,DYSJ, DYDH, BYBZ,BYGH,BYSJ,BYHD,BYHDGH,
+            BYHDSJ,FYZT,FYRQ, FYGH, CPHD, CPHDSJ,CPHDGH,DBHD,DBHDSJ,DBHDGH,FLAG,DBPC,BQQS,QSGH,QSSJ,JQYY,TYZT,TYGH,TYRQ,
+            (SELECT PCID FROM JM_ZLSJ WHERE JM_SF01.PCID=JM_ZLSJ.JLXH)  PCMC
+        FROM JM_SF01
+        WHERE TXM = #{TXM} AND JGID = #{JGID}
+    </select>
+
+    <select id="getSF01s" resultType="com.bsoft.mob.pivas.domain.mob.SF01" statementType="STATEMENT" databaseId="sqlserver">
+        SELECT JLXH,JGID,JPBH,ZYH,BRBQ, BRCH, BRXM, ZYHM, BRXB, BRNL, LSYZ, PCID,ZLSJ, TXM,
+        TXM_GZ,PZFS,ZTBZ,ZYLX,TZBZ,THBZ,SHHD, SHGH,SHSJ,SFWB,DYCS, DYGH,DYSJ, DYDH, BYBZ,BYGH,BYSJ,BYHD,BYHDGH,
+        BYHDSJ,FYZT,FYRQ, FYGH, CPHD, CPHDSJ,CPHDGH,DBHD,DBHDSJ,DBHDGH,FLAG,DBPC,BQQS,QSGH,QSSJ,JQYY,TYZT,TYGH,TYRQ,
+        (SELECT PCID FROM JM_ZLSJ WHERE JM_SF01.PCID=JM_ZLSJ.JLXH) AS PCMC
+        FROM JM_SF01 WHERE JPBH=${jpbh} AND JGID=${jgid} AND TZBZ=0 AND THBZ=0
+        <if test="brbq != null &amp;&amp; brbq!=-1">AND BRBQ = ${brbq}</if>
+        <if test="pcid != null &amp;&amp; pcid!=-1">AND PCID = ${pcid}</if>
+        <if test="pzfs != null &amp;&amp; pzfs!=-1">AND PZFS = ${pzfs}</if>
+        <if test="zylx != null &amp;&amp; zylx!=-1">AND ZYLX = ${zylx}</if>
+        <if test="begin != null">AND ZLSJ >='${begin}'</if>
+        <if test="end != null">AND ZLSJ <![CDATA[<=]]> '${end}'</if>
+        ORDER BY ZLSJ
+    </select>
+
+    <select id="getSF01s" resultType="com.bsoft.mob.pivas.domain.mob.SF01" statementType="STATEMENT" databaseId="oracle">
+        SELECT JLXH,JGID,JPBH,ZYH,BRBQ, BRCH, BRXM, ZYHM, BRXB, BRNL, LSYZ, PCID,ZLSJ, TXM,
+        TXM_GZ,PZFS,ZTBZ,ZYLX,TZBZ,THBZ,SHHD, SHGH,SHSJ,SFWB,DYCS, DYGH,DYSJ, DYDH, BYBZ,BYGH,BYSJ,BYHD,BYHDGH,
+        BYHDSJ,FYZT,FYRQ, FYGH, CPHD, CPHDSJ,CPHDGH,DBHD,DBHDSJ,DBHDGH,FLAG,DBPC,BQQS,QSGH,QSSJ,JQYY,TYZT,TYGH,TYRQ,
+        (SELECT PCID FROM JM_ZLSJ WHERE JM_SF01.PCID=JM_ZLSJ.JLXH) PCMC
+        FROM JM_SF01 WHERE JPBH=${jpbh} AND JGID=${jgid} AND TZBZ=0 AND THBZ=0
+        <if test="brbq != null &amp;&amp; brbq!=-1">AND BRBQ = ${brbq}</if>
+        <if test="pcid != null &amp;&amp; pcid!=-1">AND PCID = ${pcid}</if>
+        <if test="pzfs != null &amp;&amp; pzfs!=-1">AND PZFS = ${pzfs}</if>
+        <if test="zylx != null &amp;&amp; zylx!=-1">AND ZYLX = ${zylx}</if>
+        <if test="begin != null">AND ZLSJ >= TO_DATE('${begin}','yyyy-MM-dd hh24:mi:ss')</if>
+        <if test="end != null">AND ZLSJ <![CDATA[<=]]> TO_DATE('${end}','yyyy-MM-dd hh24:mi:ss')</if>
+        ORDER BY ZLSJ
+    </select>
+
+    <select id="getTodos" resultType="com.bsoft.mob.pivas.domain.mob.SF01" statementType="STATEMENT" databaseId="oracle">
+        SELECT JLXH,JGID,JPBH,ZYH,BRBQ, BRCH, BRXM, ZYHM, BRXB, BRNL, LSYZ, PCID,ZLSJ, TXM,
+        TXM_GZ,PZFS,ZTBZ,ZYLX,TZBZ,THBZ,SHHD, SHGH,SHSJ,SFWB,DYCS, DYGH,DYSJ, DYDH, BYBZ,BYGH,BYSJ,BYHD,BYHDGH,
+        BYHDSJ,FYZT,FYRQ, FYGH, CPHD, CPHDSJ,CPHDGH,DBHD,DBHDSJ,DBHDGH,FLAG,DBPC,BQQS,QSGH,QSSJ,JQYY,TYZT,TYGH,TYRQ,
+        (SELECT PCID FROM JM_ZLSJ WHERE JM_SF01.PCID=JM_ZLSJ.JLXH) PCMC
+        FROM JM_SF01 WHERE JPBH=${jpbh} AND JGID=${jgid} AND TZBZ=0 AND THBZ=0
+        <if test="brbq != null &amp;&amp; brbq!=-1">AND BRBQ = ${brbq}</if>
+        <if test="pcid != null &amp;&amp; pcid!=-1">AND PCID = ${pcid}</if>
+        <if test="pzfs != null &amp;&amp; pzfs!=-1">AND PZFS = ${pzfs}</if>
+        <if test="zylx != null &amp;&amp; zylx!=-1">AND ZYLX = ${zylx}</if>
+        <if test="fzcx != null"> AND ${fzcx} =0 </if>
+        <if test="begin != null">AND ZLSJ >= TO_DATE('${begin}','yyyy-MM-dd hh24:mi:ss')</if>
+        <if test="end != null">AND ZLSJ <![CDATA[<=]]> TO_DATE('${end}','yyyy-MM-dd hh24:mi:ss')</if>
+        ORDER BY ZLSJ
+    </select>
+
+    <select id="getTodos" resultType="com.bsoft.mob.pivas.domain.mob.SF01" statementType="STATEMENT" databaseId="sqlserver">
+        SELECT JLXH,JGID,JPBH,ZYH,BRBQ, BRCH, BRXM, ZYHM, BRXB, BRNL, LSYZ, PCID,ZLSJ, TXM,
+        TXM_GZ,PZFS,ZTBZ,ZYLX,TZBZ,THBZ,SHHD, SHGH,SHSJ,SFWB,DYCS, DYGH,DYSJ, DYDH, BYBZ,BYGH,BYSJ,BYHD,BYHDGH,
+        BYHDSJ,FYZT,FYRQ, FYGH, CPHD, CPHDSJ,CPHDGH,DBHD,DBHDSJ,DBHDGH,FLAG,DBPC,BQQS,QSGH,QSSJ,JQYY,TYZT,TYGH,TYRQ,
+        (SELECT PCID FROM JM_ZLSJ WHERE JM_SF01.PCID=JM_ZLSJ.JLXH) AS PCMC
+        FROM JM_SF01 WHERE JPBH=${jpbh} AND JGID=${jgid} AND TZBZ=0 AND THBZ=0
+        <if test="brbq != null &amp;&amp; brbq!=-1">AND BRBQ = ${brbq}</if>
+        <if test="pcid != null &amp;&amp; pcid!=-1">AND PCID = ${pcid}</if>
+        <if test="pzfs != null &amp;&amp; pzfs!=-1">AND PZFS = ${pzfs}</if>
+        <if test="zylx != null &amp;&amp; zylx!=-1">AND ZYLX = ${zylx}</if>
+        <if test="fzcx != null"> AND ${fzcx} =0 </if>
+        <if test="begin != null">AND ZLSJ >='${begin}'</if>
+        <if test="end != null">AND ZLSJ <![CDATA[<=]]> '${end}'</if>
+        ORDER BY ZLSJ
+    </select>
+
+    <update id="setTZBZ">
+        UPDATE JM_SF01
+        SET TZBZ = #{TZBZ}, ZTBZ = 5
+        WHERE JLXH = #{JLXH}
+    </update>
+
+    <update id="actionPlace" databaseId="sqlserver">
+        UPDATE JM_SF01
+        SET BYBZ = 1, BYGH = #{ygdm}, BYSJ = #{time}
+        <if test="ztbz &lt; 4" >, ZTBZ=3 </if>
+        WHERE JLXH = #{jlxh} AND TZBZ = 0 AND THBZ = 0 AND BYBZ=0
+    </update>
+    <update id="actionPlace" databaseId="oracle">
+        UPDATE JM_SF01
+        SET BYBZ = 1, BYGH = #{ygdm}, BYSJ =to_date( #{time},'yyyy-MM-dd hh24:mi:ss')
+        <if test="ztbz &lt; 4" >, ZTBZ=3 </if>
+        WHERE JLXH = #{jlxh} AND TZBZ = 0 AND THBZ = 0 AND BYBZ=0
+    </update>
+    <update id="actionPlaceCheck" databaseId="sqlserver">
+        UPDATE JM_SF01
+        SET BYHD = 1, BYHDGH = #{ygdm}, BYHDSJ = #{time}
+        <if test="ztbz &lt; 5" >, ZTBZ=4 </if>
+        WHERE JLXH = #{jlxh} AND TZBZ = 0 AND THBZ = 0 AND BYHD=0
+    </update>
+    <update id="actionPlaceCheck" databaseId="oracle">
+        UPDATE JM_SF01
+        SET BYHD = 1, BYHDGH = #{ygdm}, BYHDSJ =to_date( #{time},'yyyy-MM-dd hh24:mi:ss')
+        <if test="ztbz &lt; 5" >, ZTBZ=4 </if>
+        WHERE JLXH = #{jlxh} AND TZBZ = 0 AND THBZ = 0 AND BYHD=0
+    </update>
+    <update id="actionBilling" databaseId="sqlserver">
+        UPDATE JM_SF01
+        SET ZTBZ = 6, FYZT = 1, FYGH = #{ygdm}, FYRQ = #{time}
+        WHERE JLXH = #{jlxh} AND TZBZ = 0 AND THBZ = 0 AND FYZT=0
+    </update>
+    <update id="actionBilling" databaseId="oracle">
+        UPDATE JM_SF01
+        SET ZTBZ = 6, FYZT = 1, FYGH = #{ygdm}, FYRQ = to_date(#{time},'yyyy-MM-dd hh24:mi:ss')
+        WHERE JLXH = #{jlxh} AND TZBZ = 0 AND THBZ = 0 AND FYZT=0
+    </update>
+    <update id="actionProductCheck" databaseId="sqlserver">
+        UPDATE JM_SF01
+        SET CPHD = 1, CPHDGH = #{ygdm}, CPHDSJ = #{time}
+        <if test="ztbz &lt; 8" >, ZTBZ=7 </if>
+        WHERE JLXH = #{jlxh} AND TZBZ = 0 AND THBZ = 0 AND CPHD=0
+    </update>
+    <update id="actionProductCheck" databaseId="oracle">
+        UPDATE JM_SF01
+        SET CPHD = 1, CPHDGH = #{ygdm}, CPHDSJ = to_date(#{time},'yyyy-MM-dd hh24:mi:ss')
+        <if test="ztbz &lt; 8" >, ZTBZ=7 </if>
+        WHERE JLXH = #{jlxh} AND TZBZ = 0 AND THBZ = 0 AND CPHD=0
+    </update>
+    <update id="actionSign" databaseId="sqlserver">
+        UPDATE JM_SF01
+        SET ZTBZ = 9,BQQS = 1, QSGH = #{ygdm}, QSSJ = #{time}
+        WHERE  TZBZ = 0 AND THBZ = 0 AND BQQS !=1 AND JLXH IN
+        <foreach item="item" index="index" collection="array"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <update id="actionSign" databaseId="oracle">
+        UPDATE JM_SF01
+        SET ZTBZ = 9,BQQS = 1, QSGH = #{ygdm}, QSSJ = to_date(#{time},'yyyy-MM-dd hh24:mi:ss')
+        WHERE  TZBZ = 0 AND THBZ = 0 AND BQQS !=1 AND JLXH IN
+        <foreach item="item" index="index" collection="array"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <update id="refuseSign" databaseId="sqlserver">
+        UPDATE JM_SF01
+        SET ZTBZ = 10,BQQS = 2, QSGH = #{ygdm}, QSSJ = #{time} , JQYY=(SELECT YYNR FROM JM_THYY WHERE YYXH=#{yyxh})
+        WHERE TXM=#{txm} AND TZBZ = 0 AND THBZ = 0 AND BQQS !=1
+    </update>
+    <update id="refuseSign" databaseId="oracle">
+        UPDATE JM_SF01
+        SET ZTBZ = 10,BQQS = 2, QSGH = #{ygdm}, QSSJ = TO_DATE(#{time}, 'yyyy-MM-dd hh24:mi:ss') , JQYY=(SELECT YYNR FROM JM_THYY WHERE YYXH=#{yyxh})
+        WHERE TXM=#{txm} AND TZBZ = 0 AND THBZ = 0 AND BQQS !=1
+    </update>
+    <select id="getSF01sByDBTM" resultType="com.bsoft.mob.pivas.domain.mob.SF01">
+        SELECT JLXH,JGID,JPBH,ZYH,BRBQ, BRCH, BRXM, ZYHM, BRXB, BRNL, LSYZ, PCID,ZLSJ, TXM,
+        TXM_GZ,PZFS,ZTBZ,ZYLX,TZBZ,THBZ,SHHD, SHGH,SHSJ,SFWB,DYCS, DYGH,DYSJ, DYDH, BYBZ,BYGH,BYSJ,BYHD,BYHDGH,
+        BYHDSJ,FYZT,FYRQ, FYGH, CPHD, CPHDSJ,CPHDGH,DBHD,DBHDSJ,DBHDGH,FLAG,DBPC,BQQS,QSGH,QSSJ,JQYY,TYZT,TYGH,TYRQ,
+        (SELECT PCID FROM JM_ZLSJ WHERE JM_SF01.PCID=JM_ZLSJ.JLXH) PCMC
+        FROM JM_SF01 WHERE TXM_GZ=#{dbtm} AND THBZ=0 AND TZBZ=0 AND BQQS !=1
+        ORDER BY ZLSJ
+    </select>
+
+    <select id="getCount" resultType="int" databaseId="sqlserver">
+        SELECT COUNT(*) FROM JM_SF01
+        WHERE JPBH=#{jpbh}
+        <choose>
+            <when test="mkbh == 1">
+                AND SHGH=#{ygdm} AND SHSJ >= #{begin} AND  SHSJ <![CDATA[ <= ]]>  #{end}
+            </when>
+            <when test="mkbh == 2">
+                AND DYGH=#{ygdm} AND DYSJ >= #{begin} AND  DYSJ <![CDATA[ <= ]]>  #{end}
+            </when>
+            <when test="mkbh == 3">
+                AND BYGH=#{ygdm} AND BYSJ >= #{begin} AND  BYSJ <![CDATA[ <= ]]>  #{end}
+            </when>
+            <when test="mkbh == 4">
+                AND BYHDGH=#{ygdm} AND BYHDSJ >= #{begin} AND  BYHDSJ <![CDATA[ <= ]]>  #{end}
+            </when>
+            <when test="mkbh == 5">
+                AND FYGH=#{ygdm} AND FYRQ >= #{begin} AND  FYRQ <![CDATA[ <= ]]>  #{end}
+            </when>
+            <when test="mkbh == 6">
+                AND CPHDGH=#{ygdm} AND CPHDSJ >= #{begin} AND  CPHDSJ <![CDATA[ <= ]]>  #{end}
+            </when>
+            <when test="mkbh == 7">
+                AND DBHDGH=#{ygdm} AND DBHDSJ >= #{begin} AND  DBHDSJ <![CDATA[ <= ]]>  #{end}
+            </when>
+            <when test="mkbh == 8">
+                AND QSGH=#{ygdm} AND QSSJ >= #{begin} AND  QSSJ <![CDATA[ <= ]]>  #{end}
+            </when>
+            <when test="mkbh == 9">
+                AND TYGH=#{ygdm} AND TYRQ >= #{begin} AND  TYRQ <![CDATA[ <= ]]>  #{end}
+            </when>
+            <otherwise>
+                AND BYGH IS NOT NULL
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getCount" resultType="int" databaseId="oracle">
+        SELECT COUNT(*) FROM JM_SF01
+        WHERE JPBH=#{jpbh}
+        <choose>
+            <when test="mkbh == 1">
+                AND SHGH=#{ygdm} AND SHSJ >= TO_DATE(#{begin},'yyyy-MM-dd hh24:mi:ss') AND  SHSJ <![CDATA[ <= ]]>  TO_DATE(#{end},'yyyy-MM-dd hh24:mi:ss')
+            </when>
+            <when test="mkbh == 2">
+                AND DYGH=#{ygdm} AND DYSJ >= TO_DATE(#{begin},'yyyy-MM-dd hh24:mi:ss') AND  DYSJ <![CDATA[ <= ]]>  TO_DATE(#{end},'yyyy-MM-dd hh24:mi:ss')
+            </when>
+            <when test="mkbh == 3">
+                AND BYGH=#{ygdm} AND BYSJ >= TO_DATE(#{begin},'yyyy-MM-dd hh24:mi:ss') AND  BYSJ <![CDATA[ <= ]]>  TO_DATE(#{end},'yyyy-MM-dd hh24:mi:ss')
+            </when>
+            <when test="mkbh == 4">
+                AND BYHDGH=#{ygdm} AND BYHDSJ >= TO_DATE(#{begin},'yyyy-MM-dd hh24:mi:ss') AND  BYHDSJ <![CDATA[ <= ]]>  TO_DATE(#{end},'yyyy-MM-dd hh24:mi:ss')
+            </when>
+            <when test="mkbh == 5">
+                AND FYGH=#{ygdm} AND FYRQ >= TO_DATE(#{begin},'yyyy-MM-dd hh24:mi:ss') AND  FYRQ <![CDATA[ <= ]]>  TO_DATE(#{end},'yyyy-MM-dd hh24:mi:ss')
+            </when>
+            <when test="mkbh == 6">
+                AND CPHDGH=#{ygdm} AND CPHDSJ >= TO_DATE(#{begin},'yyyy-MM-dd hh24:mi:ss') AND  CPHDSJ <![CDATA[ <= ]]>  TO_DATE(#{end},'yyyy-MM-dd hh24:mi:ss')
+            </when>
+            <when test="mkbh == 7">
+                AND DBHDGH=#{ygdm} AND DBHDSJ >= TO_DATE(#{begin},'yyyy-MM-dd hh24:mi:ss') AND  DBHDSJ <![CDATA[ <= ]]>  TO_DATE(#{end},'yyyy-MM-dd hh24:mi:ss')
+            </when>
+            <when test="mkbh == 8">
+                AND QSGH=#{ygdm} AND QSSJ >= TO_DATE(#{begin},'yyyy-MM-dd hh24:mi:ss') AND  QSSJ <![CDATA[ <= ]]>  TO_DATE(#{end},'yyyy-MM-dd hh24:mi:ss')
+            </when>
+            <when test="mkbh == 9">
+                AND TYGH=#{ygdm} AND TYRQ >= TO_DATE(#{begin},'yyyy-MM-dd hh24:mi:ss') AND TYRQ <![CDATA[<=]]> TO_DATE(#{end},'yyyy-MM-dd hh24:mi:ss')
+            </when>
+            <otherwise>
+                AND BYGH IS NOT NULL
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getDoneCount" resultType="int" databaseId="sqlserver">
+
+        SELECT COUNT(*)  FROM JM_SF01
+        WHERE JPBH=#{jpbh} AND ZLSJ >= #{begin} AND  ZLSJ <![CDATA[ <= ]]>  #{end}
+        <choose>
+            <when test="mkbh == 1">
+                AND SHGH IS NOT NULL
+            </when>
+            <when test="mkbh == 2">
+                AND DYGH IS NOT NULL
+            </when>
+            <when test="mkbh == 3">
+                AND BYGH IS NOT NULL
+            </when>
+            <when test="mkbh == 4">
+                AND BYHDGH IS NOT NULL
+            </when>
+            <when test="mkbh == 5">
+                AND FYGH IS NOT NULL
+            </when>
+            <when test="mkbh == 6">
+                AND CPHDGH IS NOT NULL
+            </when>
+            <when test="mkbh == 7">
+                AND DBHDGH IS NOT NULL
+            </when>
+            <when test="mkbh == 8">
+                AND QSGH IS NOT NULL
+            </when>
+            <otherwise>
+                AND BYGH IS NOT NULL
+            </otherwise>
+        </choose>
+
+        <if test="bqValue!=-1">
+            AND  BRBQ = #{bqValue}
+        </if>
+        <if test="fsValue!=-1">
+            AND  PZFS = #{fsValue}
+        </if>
+        <if test="pcValue!=-1">
+            AND  PCID = #{pcValue}
+        </if>
+        <if test="ypValue!=-1">
+            AND  ZYLX = #{ypValue}
+        </if>
+    </select>
+
+    <select id="getDoneCount" resultType="int" databaseId="oracle">
+
+        SELECT COUNT(*)  FROM JM_SF01
+        WHERE JPBH=#{jpbh} AND ZLSJ >= TO_DATE(#{begin},'yyyy-MM-dd hh24:mi:ss')
+        AND  ZLSJ <![CDATA[ <= ]]>  TO_DATE(#{end},'yyyy-MM-dd hh24:mi:ss')
+        <choose>
+            <when test="mkbh == 1">
+                AND SHGH IS NOT NULL
+            </when>
+            <when test="mkbh == 2">
+                AND DYGH IS NOT NULL
+            </when>
+            <when test="mkbh == 3">
+                AND BYGH IS NOT NULL
+            </when>
+            <when test="mkbh == 4">
+                AND BYHDGH IS NOT NULL
+            </when>
+            <when test="mkbh == 5">
+                AND FYGH IS NOT NULL
+            </when>
+            <when test="mkbh == 6">
+                AND CPHDGH IS NOT NULL
+            </when>
+            <when test="mkbh == 7">
+                AND DBHDGH IS NOT NULL
+            </when>
+            <when test="mkbh == 8">
+                AND QSGH IS NOT NULL
+            </when>
+            <otherwise>
+                AND BYGH IS NOT NULL
+            </otherwise>
+        </choose>
+
+        <if test="bqValue!=-1">
+            AND  BRBQ = #{bqValue}
+        </if>
+        <if test="fsValue!=-1">
+            AND  PZFS = #{fsValue}
+        </if>
+        <if test="pcValue!=-1">
+            AND  PCID = #{pcValue}
+        </if>
+        <if test="ypValue!=-1">
+            AND  ZYLX = #{ypValue}
+        </if>
+    </select>
+
+    <select id="getMaxCount" resultType="int" databaseId="sqlserver">
+
+        SELECT COUNT(*) AS MKSL FROM JM_SF01
+        WHERE JPBH=#{jpbh} AND ZLSJ >= #{begin} AND  ZLSJ <![CDATA[ <= ]]>  #{end}
+        <if test="mkbh == 6">
+            AND  PZFS=1
+        </if>
+        <if test="bqValue!=-1">
+            AND  BRBQ = #{bqValue}
+        </if>
+        <if test="fsValue!=-1">
+            AND  PZFS = #{fsValue}
+        </if>
+        <if test="pcValue!=-1">
+            AND  PCID = #{pcValue}
+        </if>
+        <if test="ypValue!=-1">
+            AND  ZYLX = #{ypValue}
+        </if>
+
+    </select>
+
+    <select id="getMaxCount" resultType="int" databaseId="oracle">
+
+        SELECT COUNT(*) AS MKSL FROM JM_SF01
+        WHERE JPBH=#{jpbh} AND ZLSJ >= TO_DATE(#{begin},'yyyy-MM-dd hh24:mi:ss')
+        AND  ZLSJ <![CDATA[ <= ]]>  TO_DATE(#{end},'yyyy-MM-dd hh24:mi:ss')
+        <if test="mkbh == 6">
+            AND  PZFS=1
+        </if>
+        <if test="bqValue!=-1">
+            AND  BRBQ = #{bqValue}
+        </if>
+        <if test="fsValue!=-1">
+            AND  PZFS = #{fsValue}
+        </if>
+        <if test="pcValue!=-1">
+            AND  PCID = #{pcValue}
+        </if>
+        <if test="ypValue!=-1">
+            AND  ZYLX = #{ypValue}
+        </if>
+
+    </select>
+
+    <select id="getZtbz" resultType="int">
+        SELECT ZTBZ FROM JM_SF01 WHERE JLXH=#{jlxh}
+    </select>
+</mapper>

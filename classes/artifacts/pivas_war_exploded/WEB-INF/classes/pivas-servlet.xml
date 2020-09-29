@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 启动Spring的注解功能，完成请求和注解POJO的映射 ，对相关包中的注解类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+    <import resource="classpath:scan.xml"/>
+
+    <!-- Enables the Spring annotation programming model -->
+    <mvc:annotation-driven/>
+
+
+    <!-- 处理静态资源访问 -->
+    <mvc:resources mapping="/apps/**" location="/apps/"/>
+    <!-- 处理其他未 Mapping URL访问-->
+    <mvc:resources mapping="/**" location="/"/>
+
+</beans>
